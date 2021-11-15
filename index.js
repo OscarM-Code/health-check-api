@@ -9,7 +9,7 @@ const port = 5000;
 app.use(cors());
 app.use(express.json());
 
-mongoose.connect('mongodb://localhost:27017/health-check', { useNewUrlParser: true, useUnifiedTopology: true,  autoIndex: true});
+mongoose.connect(`mongodb+srv://health:${process.env.PSWD}@cluster0.xcibb.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`, { useNewUrlParser: true, useUnifiedTopology: true,  autoIndex: true});
 
 let db = mongoose.connection;
 
