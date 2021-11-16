@@ -3,7 +3,7 @@ const Category = require('../model/Category');
 const SiteModel = require('../model/Site');
 const fetch = require('node-fetch');
 
-let job = new CronJob(' * * * * *',task);
+let job = new CronJob('* * * * *',task);
 
 function task(){
     
@@ -18,7 +18,6 @@ function task(){
             })
             .then(response => response.status)
             .then(test => {
-                //console.log(test);
                 let health;
                 if(test !== 404 && !test.toString().startsWith("5")){
                     health = true;

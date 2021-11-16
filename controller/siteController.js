@@ -1,5 +1,6 @@
 const SiteModel = require("../model/Site");
 const CategoryModel = require("../model/Category");
+const UserModel = require("../model/User");
 const fetch = require("node-fetch");
 
 exports.create = async (req, res) => {
@@ -23,7 +24,8 @@ exports.create = async (req, res) => {
         		method: req.body.method,
                 statusCode: statusCode,
                 health: health,
-				category: req.body.category
+				category: req.body.category,
+				user: req.decoded.userId
         	})
     await link.save()
 	CategoryModel.findOneAndUpdate({_id: req.body.category}, {$push : {sites: link._id}}, (err) => {

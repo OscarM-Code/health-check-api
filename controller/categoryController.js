@@ -1,10 +1,14 @@
 const CategoryModel = require("../model/Category");
 const SiteModel = require("../model/Site");
+const UserModel = require("../model/User");
 const fetch = require("node-fetch");
 
 exports.create = async (req, res) => {
+    console.log(req.decoded);
+
     let cat = await CategoryModel.create({
-        name: req.body.name
+        name: req.body.name,
+        user: req.decoded.userId
     });
 
     res.send(cat);
@@ -12,7 +16,7 @@ exports.create = async (req, res) => {
 
 exports.findAll = async (req, res) => {
     const cats = await CategoryModel.find();
-    console.log(cats);
+
     res.send(cats);
 }
 
@@ -62,42 +66,10 @@ exports.delete = async (req, res) => {
     })
 }
 
-exports.check = async (req, res) => {    
-    let id = req.params.id;
-    let cat = await CategoryModel.findById(id).populate("sites");
-    let sites = cat.sites;
-    sites.map(sites => {
-        let link = sites.link;
-        let method = sites.method;
-        fetch(link, {
-            method: method
-        })
-        .then(response => response.status)
-        .then(test => {
-            let health;
-            if(test !== 404 && !test.toString().startsWith("5")){
-                health = true;
-            }else{
-                health = false;
-            }
-            if(test !== sites.statusCode){
-                SiteModel.updateOne({_id: sites._id}, {statusCode: test, health: health}, (er) => {
-                    if(er){
-                        console.log(er);
-                    }
-                })
-            }
-        }).catch(err => {
-            SiteModel.updateOne({_id: sites._id}, {statusCode: 500, health: false}, (er) => {
-                if(er){
-                    console.log(er);
-                }
-            })
-        })
-        
-    })
+exports.findAllForUser = async (req, res) => {    
+    let userId = req.decoded.userId;
 
-    res.status(200).json({
-        message: "Request Check and Update", success: sites.length
-    })
+    const cats = await CategoryModel.find({user: userId});
+
+    res.send(cats);
 }

@@ -8,6 +8,7 @@ let SiteModelSchema = new Schema({
   statusCode: {type: Number},
   health: {type: Boolean},
   category: {type: mongoose.Schema.Types.ObjectId, ref: "CategoryModel"},
+  user: {type: mongoose.Schema.Types.ObjectId, ref: "UserModel"}
 });
 
 module.exports = mongoose.model('SiteModel', SiteModelSchema );
