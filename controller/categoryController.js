@@ -12,7 +12,7 @@ exports.create = async (req, res) => {
 
 exports.findAll = async (req, res) => {
     const cats = await CategoryModel.find();
-
+    console.log(cats);
     res.send(cats);
 }
 
