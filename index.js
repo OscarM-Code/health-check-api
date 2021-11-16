@@ -4,7 +4,7 @@ const cors = require("cors");
 const apiRoutes = require("./routes/routes")
 const cron = require("./tools/cron")
 let app = express();
-const port = 5000;
+const port = process.env.PORT || 5000;
 
 app.use(cors());
 app.use(express.json());
