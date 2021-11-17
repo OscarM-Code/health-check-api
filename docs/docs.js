@@ -44,16 +44,16 @@
  *    - name: login data
  *      in: body
  *      schema:
- *      type: object
- *      required:
- *      - email
- *      - password
- *      properties:
+ *       type: object
+ *       required:
+ *       - email
+ *       - password
+ *       properties:
  *         email:
  *            type: string
  *         password:
  *            type: string
- *      description: Login data, all fields are required
+ *       description: Login data, all fields are required
  *    responses:
  *      '200':
  *          description: A successful response
