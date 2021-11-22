@@ -11,6 +11,12 @@ exports.create = async (req, res) => {
         user: req.decoded.userId
     });
 
+    UserModel.findOneAndUpdate({_id: req.decoded.userId}, {$push : {categories: cat._id}}, (err) => {
+		if(err){
+			res.send(err)
+		}
+	});
+
     res.send(cat);
 }
 
@@ -64,6 +70,15 @@ exports.delete = async (req, res) => {
 			message: "Category deleted.", success: 1
 		})
     })
+    UserModel.findOneAndUpdate({_id: req.decoded.userId}, {$pull : {categories: id}}, (err) => {
+        if(err){
+            if(er){
+                return res.status(400).json({
+                    message: "An error was occured", success: 0, status: 400
+                })
+            }
+        }
+    });
 }
 
 exports.findAllForUser = async (req, res) => {    

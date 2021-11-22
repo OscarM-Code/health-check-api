@@ -33,6 +33,11 @@ exports.create = async (req, res) => {
 			res.send(err)
 		}
 	});
+	UserModel.findOneAndUpdate({_id: req.decoded.userId}, {$push : {sites: link._id}}, (err) => {
+		if(err){
+			res.send(err)
+		}
+	});
     res.send(link)
 }
 
@@ -129,6 +134,15 @@ exports.delete = async (req, res) => {
 			}
 		}
 	}).clone().catch(function(err){ console.log(err)});
+	UserModel.findOneAndUpdate({_id: req.decoded.userId}, {$pull : {sites: id}}, (err) => {
+		if(err){
+			if(er){
+				return res.status(400).json({
+					message: "An error was occured", success: 0, status: 400
+				})
+			}
+		}
+	});
 	SiteModel.deleteOne({_id: id}, (er, link) => {
 		if(er){
 			if(er){

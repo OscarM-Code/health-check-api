@@ -43,7 +43,10 @@ exports.createUser = async (req, res) => {
 
         user.token = token;
 
-        res.status(201).json(user);
+        res.status(200).send({
+            user,
+            statusCode: 200,
+        });
 
     } catch (error) {
 
@@ -84,7 +87,7 @@ exports.loginUser = async (req, res) => {
         }
 
         const token = jwt.sign(
-            { userId: user._id, email, role: user.role },
+            { userId: user._id, email, role: user.role, first_name: user.first_name, last_name: user.last_name, categories: user.categories },
             process.env.TOKEN_KEY,
             { expiresIn: "2h" }
         );
@@ -93,7 +96,13 @@ exports.loginUser = async (req, res) => {
 
         let thisUser = {
             token: user.token,
+            id: user._id,
         }
+
+        res.status(200).send({
+            thisUser, 
+            status: 200
+        });
 
         res.status(200).json(thisUser);
 
