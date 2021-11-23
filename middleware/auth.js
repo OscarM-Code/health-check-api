@@ -7,7 +7,8 @@ exports.verifyToken = (req, res, next) => {
     if(!token) {
         return res.status(403).send({
             success: false,
-            message: 'No token provided.'
+            message: 'No token provided.',
+            status: 403
         });
     }
     try {
@@ -17,7 +18,8 @@ exports.verifyToken = (req, res, next) => {
 
         return res.status(401).send({
             success: false,
-            message: 'Invalid token.'
+            message: 'Invalid token.',
+            status: 401
         });
 
     }
