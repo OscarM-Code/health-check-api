@@ -108,7 +108,7 @@ exports.loginUser = async (req, res) => {
 
     } catch (error) {
             
-            res.status(400).json({
+            res.status(400).send({
                 status: "error",
                 message: error.message,
             });
