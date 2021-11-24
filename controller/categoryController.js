@@ -4,20 +4,38 @@ const UserModel = require("../model/User");
 const fetch = require("node-fetch");
 
 exports.create = async (req, res) => {
-    console.log(req.decoded);
 
-    let cat = await CategoryModel.create({
-        name: req.body.name,
-        user: req.decoded.userId
-    });
+    CategoryModel.findOneAndUpdate({name: req.body.name, user: req.decoded.userId}, {name: req.body.name}, async (err, stat) => {
 
-    UserModel.findOneAndUpdate({_id: req.decoded.userId}, {$push : {categories: cat._id}}, (err) => {
-		if(err){
-			res.send(err)
-		}
-	});
-
-    res.send(cat);
+        if(err){
+            return res.status(400).json({
+                message: "An error was occured", success: 0, status: 400
+            })
+        } else {
+            if(!stat){
+                let cat = await CategoryModel.create({
+                    name: req.body.name,
+                    user: req.decoded.userId
+                });
+            
+                UserModel.findOneAndUpdate({_id: req.decoded.userId}, {$push : {categories: cat._id}}, (er) => {
+                    if(er){
+                        return res.send({
+                            message: "An error was occured", success: 0, status: 400
+                        })
+                    }
+                });
+            
+                res.send({
+                    cat, success: 1, status: 200
+                });
+            } else {
+                res.status(400).send({
+                    message: "Category already exists.", success: 0, status: 400
+                })
+            }
+        }
+    })
 }
 
 exports.findAll = async (req, res) => {

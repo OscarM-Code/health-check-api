@@ -4,41 +4,64 @@ const UserModel = require("../model/User");
 const fetch = require("node-fetch");
 
 exports.create = async (req, res) => {
-	let health;
-	let statusCode;
-	await fetch(req.body.link, {method: req.body.method})
-		.then(res => res.status)
-		.then(status => {
-			if(status !== 404 && !status.toString().startsWith("5")){
-				health = true;
-			}else{
-				health = false;
-			}
-			statusCode = status;
-		}).catch(err => {
-			health = false;
-			statusCode = 500;
-		})
-    const link = new SiteModel({
-        		link: req.body.link,
-        		method: req.body.method,
-                statusCode: statusCode,
-                health: health,
-				category: req.body.category,
-				user: req.decoded.userId
-        	})
-    await link.save()
-	CategoryModel.findOneAndUpdate({_id: req.body.category}, {$push : {sites: link._id}}, (err) => {
-		if(err){
-			res.send(err)
-		}
-	});
-	UserModel.findOneAndUpdate({_id: req.decoded.userId}, {$push : {sites: link._id}}, (err) => {
-		if(err){
-			res.send(err)
-		}
-	});
-    res.send(link)
+	
+	SiteModel.findOneAndUpdate({link: req.body.link, user: req.decoded.userId, method: req.body.method}, {name: req.body.name}, async (err, stat) => {
+        console.log(err);
+        console.log(stat);
+        if(err){
+            return res.status(400).json({
+                message: "An error was occured", success: 0, status: 400
+            })
+        } else {
+            if(!stat){                
+				let health;
+				let statusCode;
+				await fetch(req.body.link, {method: req.body.method})
+					.then(res => res.status)
+					.then(status => {
+						if(status !== 404 && !status.toString().startsWith("5")){
+							health = true;
+						}else{
+							health = false;
+						}
+						statusCode = status;
+					}).catch(err => {
+						health = false;
+						statusCode = 500;
+					})
+				const link = new SiteModel({
+							link: req.body.link,
+							method: req.body.method,
+							statusCode: statusCode,
+							health: health,
+							category: req.body.category,
+							user: req.decoded.userId
+						})
+				await link.save()
+				CategoryModel.findOneAndUpdate({_id: req.body.category}, {$push : {sites: link._id}}, (err) => {
+					if(err){
+						return res.send({
+							message: "An error was occured", success: 0, status: 400
+						})
+					}
+				});
+				UserModel.findOneAndUpdate({_id: req.decoded.userId}, {$push : {sites: link._id}}, (err) => {
+					if(err){
+						return res.send({
+							message: "An error was occured", success: 0, status: 400
+						})
+					}
+				});
+				res.send({
+					link, success: 1, status: 200
+				})
+            } else {
+                res.status(400).send({
+                    message: "Request already exists.", success: 0, status: 400
+                })
+            }
+        }
+    })
 }
 
 exports.findAll = async (req, res) => {
