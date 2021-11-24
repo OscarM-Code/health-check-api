@@ -58,7 +58,7 @@ exports.createUser = async (req, res) => {
     }
 }
 
-exports.loginUser = async (req, res) => {
+exports.loginUser = async (req, res, next) => {
     
     try {
 
