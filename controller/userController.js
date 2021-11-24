@@ -13,7 +13,7 @@ exports.createUser = async (req, res) => {
 
         if(!(email && password && first_name && last_name)){
             return res.status(400).send({
-                message: "Please fill all the fields"
+                message: "Vous devez remplir tout les champs."
             });
         }
 
@@ -21,7 +21,7 @@ exports.createUser = async (req, res) => {
 
         if(oldUser){
             return res.status(400).send({
-                message: "User already exists"
+                message: "L'utilisateur existe déjà"
             });
         }
 
@@ -66,7 +66,7 @@ exports.loginUser = async (req, res) => {
 
         if(!(email && password)){
             return res.status(400).send({
-                message: "Please fill all the fields"
+                message: "Vous devez remplir tout les champs"
             });
         }
 
@@ -74,7 +74,7 @@ exports.loginUser = async (req, res) => {
 
         if(!user){
             return res.status(400).send({
-                message: "User does not exist"
+                message: "L'utilisateur n'existe pas"
             });
         }
 
@@ -82,7 +82,7 @@ exports.loginUser = async (req, res) => {
 
         if(!isMatch){
             return res.status(400).send({
-                message: "Wrong password"
+                message: "Mauvais mot de passe"
             });
         }
 
@@ -103,8 +103,6 @@ exports.loginUser = async (req, res) => {
             thisUser, 
             status: 200
         });
-
-        res.status(200).json(thisUser);
 
     } catch (error) {
             

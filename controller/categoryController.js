@@ -9,7 +9,7 @@ exports.create = async (req, res) => {
 
         if(err){
             return res.status(400).json({
-                message: "An error was occured", success: 0, status: 400
+                message: "Une erreur est survenue.", success: 0, status: 400
             })
         } else {
             if(!stat){
@@ -21,7 +21,7 @@ exports.create = async (req, res) => {
                 UserModel.findOneAndUpdate({_id: req.decoded.userId}, {$push : {categories: cat._id}}, (er) => {
                     if(er){
                         return res.send({
-                            message: "An error was occured", success: 0, status: 400
+                            message: "Une erreur est survenue.", success: 0, status: 400
                         })
                     }
                 });
@@ -31,7 +31,7 @@ exports.create = async (req, res) => {
                 });
             } else {
                 res.status(400).send({
-                    message: "Category already exists.", success: 0, status: 400
+                    message: "La catégorie existe déjà", success: 0, status: 400
                 })
             }
         }
@@ -61,7 +61,7 @@ exports.update = (req, res) => {
             res.send(er);
         }
         res.status(200).json({
-			message: "Category name modified.", success: 1
+			message: "Category modifiée.", success: 1
 		})
     })
 }
@@ -85,14 +85,14 @@ exports.delete = async (req, res) => {
             res.send(er);
         }
         res.status(200).json({
-			message: "Category deleted.", success: 1
+			message: "Category supprimée.", success: 1
 		})
     })
     UserModel.findOneAndUpdate({_id: req.decoded.userId}, {$pull : {categories: id}}, (err) => {
         if(err){
             if(er){
                 return res.status(400).json({
-                    message: "An error was occured", success: 0, status: 400
+                    message: "Une erreur est survenue.", success: 0, status: 400
                 })
             }
         }

@@ -4,13 +4,13 @@ const UserModel = require("../model/User");
 const fetch = require("node-fetch");
 
 exports.create = async (req, res) => {
-	
+
 	SiteModel.findOneAndUpdate({link: req.body.link, user: req.decoded.userId, method: req.body.method}, {name: req.body.name}, async (err, stat) => {
         console.log(err);
         console.log(stat);
         if(err){
             return res.status(400).json({
-                message: "An error was occured", success: 0, status: 400
+                message: "Une erreur est survenue.", success: 0, status: 400
             })
         } else {
             if(!stat){                
@@ -41,14 +41,14 @@ exports.create = async (req, res) => {
 				CategoryModel.findOneAndUpdate({_id: req.body.category}, {$push : {sites: link._id}}, (err) => {
 					if(err){
 						return res.send({
-							message: "An error was occured", success: 0, status: 400
+							message: "Une erreur est survenue.", success: 0, status: 400
 						})
 					}
 				});
 				UserModel.findOneAndUpdate({_id: req.decoded.userId}, {$push : {sites: link._id}}, (err) => {
 					if(err){
 						return res.send({
-							message: "An error was occured", success: 0, status: 400
+							message: "Une erreur est survenue.", success: 0, status: 400
 						})
 					}
 				});
@@ -57,7 +57,7 @@ exports.create = async (req, res) => {
 				})
             } else {
                 res.status(400).send({
-                    message: "Request already exists.", success: 0, status: 400
+                    message: "La requête existe déjà", success: 0, status: 400
                 })
             }
         }
@@ -89,7 +89,7 @@ exports.update = async (req, res) => {
 			if(err){
 				if(er){
 					return res.status(400).json({
-						message: "An error was occured", success: 0, status: 400
+						message: "Une erreur est survenue.", success: 0, status: 400
 					})
 				}
 			}
@@ -98,7 +98,7 @@ exports.update = async (req, res) => {
 			if(err){
 				if(er){
 					return res.status(400).json({
-						message: "An error was occured", success: 0, status: 400
+						message: "Une erreur est survenue.", success: 0, status: 400
 					})
 				}
 			}
@@ -135,11 +135,11 @@ exports.update = async (req, res) => {
 		site.save((er) => {
 			if(er){
 				return res.status(400).json({
-					message: "An error was occured", success: 0, status: 400
+					message: "Une erreur est survenue.", success: 0, status: 400
 				})
 			}
 			res.status(200).json({
-				message: "Link modified.", success: 1, status: 200
+				message: "Lien modifié", success: 1, status: 200
 			})
 		})
 	})
@@ -152,7 +152,7 @@ exports.delete = async (req, res) => {
 		if(err){
 			if(er){
 				return res.status(400).json({
-					message: "An error was occured", success: 0, status: 400
+					message: "Une erreur est survenue.", success: 0, status: 400
 				})
 			}
 		}
@@ -161,7 +161,7 @@ exports.delete = async (req, res) => {
 		if(err){
 			if(er){
 				return res.status(400).json({
-					message: "An error was occured", success: 0, status: 400
+					message: "Une erreur est survenue.", success: 0, status: 400
 				})
 			}
 		}
@@ -170,12 +170,12 @@ exports.delete = async (req, res) => {
 		if(er){
 			if(er){
 				return res.status(400).json({
-					message: "An error was occured", success: 0, status: 400
+					message: "Une erreur est survenue.", success: 0, status: 400
 				})
 			}
 		}
 		res.status(200).json({
-			message: "Link deleted.", success: 1, status: 200
+			message: "Link supprimeé", success: 1, status: 200
 		})
 	})
 }
