@@ -58,7 +58,7 @@ exports.createUser = async (req, res) => {
     }
 }
 
-exports.loginUser = async (req, res, next) => {
+exports.loginUser = async (req, res) => {
     
     try {
 
@@ -99,18 +99,16 @@ exports.loginUser = async (req, res, next) => {
             id: user._id,
         }
 
-        res.status(200).send({
+        return res.status(200).send({
             thisUser, 
             status: 200
         });
 
         res.status(200).json(thisUser);
 
-        next();
-
     } catch (error) {
             
-            res.status(400).send({
+            return res.status(400).send({
                 status: "error",
                 message: error.message,
             });
