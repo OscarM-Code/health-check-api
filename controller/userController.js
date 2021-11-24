@@ -106,6 +106,8 @@ exports.loginUser = async (req, res) => {
 
         res.status(200).json(thisUser);
 
+        next();
+
     } catch (error) {
             
             res.status(400).send({
