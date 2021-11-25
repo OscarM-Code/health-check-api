@@ -12,7 +12,7 @@ exports.verifyToken = (req, res, next) => {
         });
     }
     try {
-        const decoded = jwt.verify(token, process.env.TOKEN_KEY);
+        const decoded = jwt.verify(token, process.env.TOKEN_KEY.toString('base64'), { algorithms: ['HS256'] });
         req.decoded = decoded;
     } catch(err) {
 
