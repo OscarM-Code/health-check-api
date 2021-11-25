@@ -11,8 +11,6 @@ exports.verifyToken = (req, res, next) => {
             status: 403
         });
     }
-    console.log(token);
-    console.log("fqsdf<dfwfsdfg");
     try {
         const decoded = jwt.verify(token, process.env.TOKEN_KEY);
         req.decoded = decoded;
