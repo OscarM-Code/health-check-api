@@ -58,10 +58,10 @@ exports.update = (req, res) => {
     let id = req.params.id;
     CategoryModel.updateOne({_id: id}, {name: req.body.name}, (er) => {
         if(er){
-            res.send(er);
+            res.send({er, success: 0, status: 400});
         }
-        res.status(200).json({
-			message: "Category modifiée.", success: 1
+        res.status(200).send({
+			message: "Category modifiée.", success: 1, status: 200
 		})
     })
 }
@@ -84,14 +84,14 @@ exports.delete = async (req, res) => {
         if(er){
             res.send(er);
         }
-        res.status(200).json({
-			message: "Category supprimée.", success: 1
+        res.status(200).send({
+			message: "Category supprimée.", success: 1, status: 200
 		})
     })
     UserModel.findOneAndUpdate({_id: req.decoded.userId}, {$pull : {categories: id}}, (err) => {
         if(err){
             if(er){
-                return res.status(400).json({
+                return res.status(400).send({
                     message: "Une erreur est survenue.", success: 0, status: 400
                 })
             }
