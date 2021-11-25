@@ -11,8 +11,9 @@ exports.verifyToken = (req, res, next) => {
             status: 403
         });
     }
+    console.log(token);
     try {
-        const decoded = jwt.verify(token, process.env.TOKEN_KEY.toString('base64'), { algorithms: ['HS256'] });
+        const decoded = jwt.verify(token, process.env.TOKEN_KEY);
         req.decoded = decoded;
     } catch(err) {
 
