@@ -12,6 +12,7 @@ exports.verifyToken = (req, res, next) => {
         });
     }
     console.log(token);
+    console.log("fqsdf<dfwfsdfg");
     try {
         const decoded = jwt.verify(token, process.env.TOKEN_KEY);
         req.decoded = decoded;
