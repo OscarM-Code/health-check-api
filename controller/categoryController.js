@@ -48,9 +48,9 @@ exports.findOne = (req, res) => {
     let id = req.params.id;
     CategoryModel.findById(id, (er, cat) => {
         if(er){
-            res.send(er);
+            res.send({er, success: 0, status: 400});
         }
-        res.send(cat)
+        res.send({cat , success: 1, status: 200});
     }).populate("sites");
 }
 
