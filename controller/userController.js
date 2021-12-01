@@ -7,13 +7,37 @@ const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
 exports.createUser = async (req, res) => {
+    const regexName = /^[A-Za-zÀ-ú'-]{1,15}$/g;
+    const regexMail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     try {
 
         const { email, password, first_name, last_name } = req.body;
 
         if(!(email && password && first_name && last_name)){
             return res.status(400).send({
-                message: "Vous devez remplir tout les champs."
+                message: "Vous devez remplir tout les champs.",
+                statusCode: 400
+            });
+        }
+
+        if(!email.match(regexMail)){
+            return res.status(400).send({
+                message: "L'email n'est pas valide.",
+                statusCode: 400
+            });
+        }
+
+        if(!first_name.match(regexName)){
+            return res.status(400).send({
+                message: "Le prénom n'est pas valide.",
+                statusCode: 400
+            });
+        }
+
+        if(!last_name.match(regexName)){
+            return res.status(400).send({
+                message: "Le nom n'est pas valide.",
+                statusCode: 400
             });
         }
 
@@ -21,7 +45,8 @@ exports.createUser = async (req, res) => {
 
         if(oldUser){
             return res.status(400).send({
-                message: "L'utilisateur existe déjà"
+                message: "L'utilisateur existe déjà",
+                statusCode: 400
             });
         }
 
